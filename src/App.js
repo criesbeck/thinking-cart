@@ -20,12 +20,11 @@ const Thumb = props => {
 
 const Product = props => {
   const { product } = props;
-  const src = `${process.env.PUBLIC_URL}/data/products/${product.sku}_1.jpg`;
   return (
     <div className="shelf-item" data-sku={product.sku}>
       <Thumb
         classes="shelf-item__thumb"
-        src={src}
+        src={require(`./static/data/products/${product.sku}_1.jpg`)}
         alt={product.title}
       />
 
@@ -65,8 +64,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    fetch(`${process.env.PUBLIC_URL}/data/products.json`)
-      .then(response => response.json())
+    import('./static/data/products.json')
       .then((json) => { console.log(json); this.setState({ products: json.products }) })
       .catch((error) => { alert(error); });
   }
