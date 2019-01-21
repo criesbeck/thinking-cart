@@ -1,6 +1,16 @@
 import React, { Component } from 'react';
+import { auth, initializeApp } from "firebase";
+import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import './App.scss';
 
+initializeApp({
+  apiKey: "AIzaSyAP8XUMPfELZ6CG0rWEfZ3FXUSNLQLX8aY",
+  authDomain: "thinking-cart.firebaseapp.com",
+  databaseURL: "https://thinking-cart.firebaseio.com",
+  projectId: "thinking-cart",
+  storageBucket: "thinking-cart.appspot.com",
+  messagingSenderId: "746516151657"
+});
 
 class ControlBar extends Component {
   render() {
@@ -55,10 +65,22 @@ class Catalog extends Component {
 }
 
 class App extends Component {
+  uiConfig = {
+    signInFlow: 'popup',
+    signInOptions: [
+      auth.GoogleAuthProvider.PROVIDER_ID,
+      auth.EmailAuthProvider.PROVIDER_ID
+    ],
+    callbacks: {
+      signInSuccess: () => false
+    }
+  };
+
   constructor(props) {
     super(props);
 
     this.state = {
+      isSignedIn: false,
       products: [],
     };
   }
@@ -67,14 +89,30 @@ class App extends Component {
     import('./static/data/products.json')
       .then((json) => { console.log(json); this.setState({ products: json.products }) })
       .catch((error) => { alert(error); });
+    
+    auth().onAuthStateChanged(user => {
+      this.setState({ isSignedIn: !!user })
+      console.log("user", user)
+    });
   }
 
   render() {
     const { products } = this.state;
     return (
       <div className="App">
-        <ControlBar />
-        <Catalog products={products} />
+      {
+        this.state.isSignedIn ? (
+        <div>
+          <button onClick={() => auth().signOut()}>Sign out!</button>
+          <p>Welcome, {auth().currentUser.displayName}</p>
+        </div>
+        ) : (
+        <StyledFirebaseAuth
+          uiConfig={this.uiConfig}
+          firebaseAuth={auth()}
+        />
+      )}
+      <Catalog products={products} />
       </div>
     );
   }
