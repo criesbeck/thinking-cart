@@ -72,7 +72,7 @@ class App extends Component {
       auth.EmailAuthProvider.PROVIDER_ID
     ],
     callbacks: {
-      signInSuccess: () => false
+      signInSuccessWithAuthResult: (result, url) => false
     }
   };
 
@@ -92,7 +92,6 @@ class App extends Component {
     
     auth().onAuthStateChanged(user => {
       this.setState({ isSignedIn: !!user })
-      console.log("user", user)
     });
   }
 
