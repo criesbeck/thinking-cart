@@ -86,7 +86,7 @@ class App extends Component {
 
   componentDidMount() {
     import('./static/data/products.json')
-      .then((json) => { console.log(json); this.setState({ products: json.products }) })
+      .then((json) => { this.setState({ products: json.products }) })
       .catch((error) => { alert(error); });
     
     auth().onAuthStateChanged(user => {
