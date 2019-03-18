@@ -111,6 +111,7 @@ class App extends Component {
           firebaseAuth={auth()}
         />
       )}
+      <ControlBar />
       <Catalog products={products} />
       </div>
     );
