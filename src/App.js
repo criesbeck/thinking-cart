@@ -68,8 +68,7 @@ class App extends Component {
   uiConfig = {
     signInFlow: 'popup',
     signInOptions: [
-      auth.GoogleAuthProvider.PROVIDER_ID,
-      auth.EmailAuthProvider.PROVIDER_ID
+      auth.GoogleAuthProvider.PROVIDER_ID
     ],
     callbacks: {
       signInSuccessWithAuthResult: (result, url) => false
